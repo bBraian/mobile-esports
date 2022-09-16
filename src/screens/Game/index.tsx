@@ -12,6 +12,8 @@ import { THEME } from '../../theme';
 import { Heading } from '../../components/Heading';
 import { DuoCard, DuoCardProps } from '../../components/DuoCard';
 import { useEffect, useState } from 'react';
+import { EmptyAds } from '../../components/EmptyAds';
+import { DuoMatch } from '../../components/DuoMatch';
 
 interface RouteParms {
   id: string;
@@ -24,6 +26,15 @@ export function Game() {
   const game = route.params as RouteParms;
   const navigation = useNavigation();
   const [ads, setAds] = useState<DuoCardProps[]>([]);
+  const [discordDuoSelected, setDiscordDuoSelected] = useState('');
+
+  async function getDiscordUser(adsId: string) {
+    fetch(`http://192.168.1.228:3333/ads/${adsId}/discord`)
+    .then(res => res.json())
+    .then(data => {
+      setDiscordDuoSelected(data.discord  );
+    })
+  }
 
   useEffect(() => {
     fetch(`http://192.168.1.228:3333/games/${game.id}/ads`)
@@ -72,12 +83,17 @@ export function Game() {
             style={styles.containerList}
             contentContainerStyle={ads.length === 0 ? styles.emptyListContent : styles.contentList }
             showsHorizontalScrollIndicator={false}
-            ListEmptyComponent={() => (
-              <Text style={styles.emptyText}>Não há anúncios para este jogo ainda</Text>
-            )}
+            ListEmptyComponent={<EmptyAds />}
             renderItem={({item}) => (
-              <DuoCard data={item} onConnect={() => {}} />
+              <DuoCard data={item} onConnect={() => getDiscordUser(item.id)} />
             )}
+          />
+
+          <DuoMatch 
+            discord={discordDuoSelected}
+            visible={discordDuoSelected.length > 0}
+            onClose={() => setDiscordDuoSelected('')}
+      
           />
 
         </SafeAreaView>

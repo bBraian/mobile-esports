@@ -36,15 +36,12 @@ export const styles = StyleSheet.create({
     paddingRight: 52,
     alignItems: 'flex-start'
   },
-  emptyText: {
-    color: THEME.COLORS.CAPTION_300,
-    fontSize: THEME.FONT_SIZE.SM,
-    fontFamily: THEME.FONT_FAMILY.REGULAR
-  },
   emptyListContent: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: -80
+    marginTop: 50,
+    height: 200,
+    paddingHorizontal: 50
   }
 });
