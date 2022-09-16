@@ -15,12 +15,12 @@ export function Home() {
 
   const navigation = useNavigation();
 
-  function handleOpenGame() {
-    navigation.navigate('game');
+  function handleOpenGame({ id, title, banneUrk }: GameCardProps) {
+    navigation.navigate('game', { id, title, banneUrk });
   }
 
   useEffect(() => {
-    fetch('http://192.168.1.115:3333/games')
+    fetch('http://192.168.1.228:3333/games')
     .then(res => res.json())
     .then(data => {
       setGames(data);
@@ -45,10 +45,9 @@ export function Home() {
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               renderItem={({item}) => (
-                  <GameCard data={item} onPress={handleOpenGame} />
+                  <GameCard data={item} onPress={() => handleOpenGame(item)} />
               )}
           />
-
           
       </SafeAreaView>
     </Background>
